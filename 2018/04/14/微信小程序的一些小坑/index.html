@@ -145,19 +145,24 @@
 
         <div id="main" >
             <div class ="post_page_title_img" style="height: 25rem;background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
-                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Hello World</h2></a>
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >微信小程序的一些坑</h2></a>
             </div>
             <!-- Post -->
             <div class="typo" style="padding: 3rem;">
-                <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+                <p>最近在做小程序的项目，有些小问题记下来总结一下~</p>
+<h3 id="1、出现脚本错误或者未正确调用Page"><a href="#1、出现脚本错误或者未正确调用Page" class="headerlink" title="1、出现脚本错误或者未正确调用Page()"></a>1、出现脚本错误或者未正确调用Page()</h3><p>在新建项目的时候，可能会直接复制官方demo的page也有可能是自己新建。但有时候会出现一个问题，就是conosole.log窗下面会飙出一句红色提示你，出现脚本错误或者未正确调用Page()</p>
+<p>出这问题的原因最可能就是提示你的这个js文件是个空的，解决方法是在提示的js文件中加个空白的Page({})函数调用</p>
+<h3 id="2、公共模块引用"><a href="#2、公共模块引用" class="headerlink" title="2、公共模块引用"></a>2、公共模块引用</h3><p>WXML提供import和include两种文件引用方式：</p>
+<p>import有作用域的概念，不能多重引用，而include的话就可以多重引用</p>
+<h3 id="3、wx-previewImage"><a href="#3、wx-previewImage" class="headerlink" title="3、wx.previewImage()"></a>3、wx.previewImage()</h3><p>提供的这个接口很爽，一开始在写功能的时候要写一个点击进入查看大图，还有获取当前图片列表，如果是pc的话估计就直接来遮罩层了。这里有提供这个api的话用起来也省心。</p>
+<p>示例代码：</p>
+<h3 id="4、调用内置地图地址转坐标"><a href="#4、调用内置地图地址转坐标" class="headerlink" title="4、调用内置地图地址转坐标"></a>4、调用内置地图地址转坐标</h3><p>调用内置地图是比较简单的，然后当时有个需求是，点击一个中文的地址，然后再通过经纬度来显示在地图上。而小程序里面貌似只能获取经纬度的信息，而不能直接查找，那就要用到腾讯地图提供的一个SDK了。链接在这里：<a href="http://lbs.qq.com/qqmap_wx_jssdk/index.html" target="_blank" rel="noopener">http://lbs.qq.com/qqmap_wx_jssdk/index.html</a></p>
+<p>然后使用方法也很简单，直接进去地址转坐标里面，根据示例直接做就ok~（如果AppID开发的话，记得要在公众平台里面添加一下安全域名）</p>
+<h3 id="5、background的url为本地图片没法显示"><a href="#5、background的url为本地图片没法显示" class="headerlink" title="5、background的url为本地图片没法显示"></a>5、background的url为本地图片没法显示</h3><p>在前期做项目的时候，有些小icon或者一些bg之类要设置背景，这时候估计会发现，在wxss里面设置的background死活出不来。什么想对路径绝对路径都不行，然后console.log会提示你不能用本地图片！！！！！才开始，也不太可能让后端给你把这图片传服务器。</p>
+<p>解决方法：</p>
+<pre><code>可以把background写成行内式直接写在标签身上，或者把图片直接转成base64编码。这里给个base64转换的链接http://base64.xpcha.com/indexie.php    转好之后直接把编码复制下来写在url里面的位置即可。
+</code></pre><h3 id="6、直接拨打电话"><a href="#6、直接拨打电话" class="headerlink" title="6、直接拨打电话"></a>6、直接拨打电话</h3><h3 id="7、富文本解析"><a href="#7、富文本解析" class="headerlink" title="7、富文本解析"></a>7、富文本解析</h3><p>之前在做pc啊或者移动端的时候，他们的都是直接在浏览器运行的，用富文本产生的标签或者内容也完全没啥问题。然后小程序的话，他有自己的标签，并且有少数还和传统html标记有出入，那如果一个后端传过来的富文本编辑的内容，都是div啊span啊或者img啊之类的，那不是game over？还好~有需求就有市场，也有人搞定了这个问题。先上个链接：<a href="https://github.com/icindy/wxParse" target="_blank" rel="noopener">https://github.com/icindy/wxParse</a>  这个wxParse插件用起来也贼简单，README.md里面也写得很清楚的用法，还是一样的coyp–引入–数据绑定–引用模板—-ok！</p>
+<p>后续还有再继续添加~</p>
 
             </div>
 
@@ -220,8 +225,8 @@ $('.btn_click_load').click(function() {
 -->
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2018/04/13/hello-world/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://yoursite.com/2018/04/13/hello-world/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://yoursite.com/2018/04/14/微信小程序的一些小坑/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2018/04/14/微信小程序的一些小坑/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 
